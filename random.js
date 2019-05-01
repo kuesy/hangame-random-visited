@@ -5,6 +5,8 @@ const { Builder, By, until } = webdriver;
 const zalenium_hd = process.env.ZALENIUM_HD;
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
+const scmip = process.env.SCMIP;
+const login = process.env.LOGIN;
 
 async function visitedRandom (driver) {
   try {
@@ -61,11 +63,27 @@ async function isElementPresent(driver, by){
   await driver.get('http://www.hangame.co.jp');
 
   // login execution
+  /****** id and password
   await driver.wait(until.elementLocated(By.id('strmemberid')), 10000);
   await driver.executeScript(`document.getElementById('strmemberid').setAttribute('value', '${username}')`);
   await driver.wait(until.elementLocated(By.id('strpassword')), 10000);
   await driver.executeScript(`document.getElementById('strpassword').setAttribute('value', '${password}')`);
   await driver.findElement(By.id("loginBtn")).click();
+  *******/
+
+  // issue cookie
+  await driver.manage().addCookie({
+   name: 'scmip',
+   value: scmip,
+   domain: '.hangame.co.jp',
+   path: '/',
+  });
+  await driver.manage().addCookie({
+   name: 'login',
+   value: login,
+   domain: '.hangame.co.jp',
+   path: '/',
+  });
 
   // execute app
   await visitedRandom(driver);
