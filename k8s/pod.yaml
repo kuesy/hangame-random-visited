@@ -30,6 +30,16 @@ spec:
         secretKeyRef:
           name: secret-data
           key: password
+    - name: SCMIP
+      valueFrom:
+        secretKeyRef:
+          name: secret-data
+          key: scmip
+    - name: LOGIN
+      valueFrom:
+        secretKeyRef:
+          name: secret-data
+          key: login
     resources:
       requests:
         cpu: 150m

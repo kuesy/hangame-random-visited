@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: selenium-node-firefox
+  namespace: default
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: selenium-node-firefox
+  template:
+    metadata:
+      labels:
+        app: selenium-node-firefox
+    spec:
+      containers:
+      - image: gcr.io/hello-db-a5e51/node-firefox:latest
+        imagePullPolicy: Always
+        name: selenium-node-firefox
+        env:
+        - name: HUB_PORT_4444_TCP_ADDR
+          value: "selenium-hub"
+        - name: HUB_PORT_4444_TCP_PORT
+          value: "4444"
+

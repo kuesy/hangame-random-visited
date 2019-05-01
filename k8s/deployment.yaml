@@ -4,15 +4,15 @@ metadata:
   name: selenium-test
   namespace: default
 spec:
-  replicas: 5
-  revisionHistoryLimit: 2
+  replicas: 8
+  revisionHistoryLimit: 4
   selector:
     matchLabels:
       app: selenium-test
   strategy:
     rollingUpdate:
-      maxSurge: 5
-      maxUnavailable: 5
+      maxSurge: 8
+      maxUnavailable: 8
     type: RollingUpdate
   template:
     metadata:
@@ -34,6 +34,16 @@ spec:
             secretKeyRef:
               name: secret-data
               key: password
+        - name: SCMIP
+          valueFrom:
+            secretKeyRef:
+              name: secret-data
+              key: scmip
+        - name: LOGIN
+          valueFrom:
+            secretKeyRef:
+              name: secret-data
+              key: login
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
