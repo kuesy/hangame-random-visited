@@ -4,7 +4,8 @@ ENV ZALENIUM_HD=35.238.199.82:4444
 # Install app dependencies
 COPY package.json /src/package.json
 RUN cd /src; npm install
+RUN touch /tmp/healthy
 # Bundle app source
 COPY . /src
 # execute app
-CMD node /src/sample-test.js
+CMD bash -c "node /src/sample-test.js ; rm /tmp/healthy"
