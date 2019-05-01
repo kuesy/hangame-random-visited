@@ -40,7 +40,7 @@ async function visitedRandom (driver) {
     console.log(e);
     // if alert open error occured, accept alert and execute
     if (e.name === "UnexpectedAlertOpenError") {
-      await driver.switchTo().alert().accept();
+      // await driver.switchTo().alert().accept(); // for chromedriver
       await visitedRandom(driver);
     } else if (e.name === "NoSuchElementError" || e.name === "TimeoutError") {
       await visitedRandom(driver);
@@ -58,7 +58,7 @@ async function isElementPresent(driver, by){
 (async () => {
   // set webdriver
   const driver = await new webdriver.Builder().usingServer(`http://${zalenium_hd}/wd/hub`)
-    .withCapabilities(webdriver.Capabilities.chrome()).build();
+    .withCapabilities(webdriver.Capabilities.firefox()).build();
   // get url
   await driver.get('http://www.hangame.co.jp');
 
