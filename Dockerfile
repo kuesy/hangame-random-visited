@@ -8,4 +8,4 @@ RUN touch /tmp/healthy
 # Bundle app source
 COPY . /src
 # execute app
-CMD bash -c "node /src/sample-test.js ; rm /tmp/healthy"
+CMD bash -c "node /src/random.js ; rm /tmp/healthy"

@@ -4,7 +4,7 @@ services:
       image: library/node
       container_name: zalenium-hangame
       env_file: .env
-      command: bash -c "npm install && node sample-test.js"
+      command: bash -c "npm install && node random.js"
       volumes:
       - ./:/src
       working_dir: "/src"
