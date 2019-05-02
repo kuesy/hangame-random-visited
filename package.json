@@ -1,6 +1,6 @@
 {
   "name": "zalenium-hangame",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "zalenium test",
   "main": "index.js",
   "scripts": {

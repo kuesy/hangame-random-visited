@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: selenium-config
+  namespace: default
+data:
+  ZALENIUM_HD: "130.211.211.105:4444"
