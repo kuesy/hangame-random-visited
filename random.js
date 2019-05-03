@@ -27,8 +27,8 @@ async function visitedRandom (driver) {
       ******/
 
       // judge pure or cool
-      const cool = await isElementPresent(driver, By.id("avatarPanel"));
-      if (cool) {
+      const isCool = await isElementPresent(driver, By.id("avatarPanel"));
+      if (isCool) {
         await driver.wait(until.elementLocated(By.css('#avatarPanel > ul > li.agd > a')), 10000);
         await driver.findElement(By.css('#avatarPanel > ul > li.agd > a')).click();
       } else {
@@ -36,55 +36,67 @@ async function visitedRandom (driver) {
         await driver.findElement(By.css('#btn_ava_good > a')).click();
       }
     }
-  } catch (e){
+  } catch (e) {
     console.log(e);
     // if alert open error occured, accept alert and execute
     if (e.name === "UnexpectedAlertOpenError") {
       // await driver.switchTo().alert().accept(); // for chromedriver
       await visitedRandom(driver);
-    } else if (e.name === "NoSuchElementError" || e.name === "TimeoutError") {
-      await visitedRandom(driver);
-    } else {
-      driver.quit();
     }
+    // element isn't found or timeout(doesn't contain _floatingArea)
+    if (e.name === "NoSuchElementError" ||
+      (e.name === "TimeoutError" && e.message.indexOf('_floatingArea') === -1)) {
+      await visitedRandom(driver);
+    }
+    driver.quit();
   }
 };
 
-async function isElementPresent(driver, by){
+async function isElementPresent(driver, by) {
     const elements = await driver.findElements(by);
     return elements.length !== 0;
 }
 
 (async () => {
-  // set webdriver
-  const driver = await new webdriver.Builder().usingServer(`http://${zalenium_hd}/wd/hub`)
-    .withCapabilities(webdriver.Capabilities.firefox()).build();
-  // get url
-  await driver.get('http://www.hangame.co.jp');
+  try {
+    // set webdriver
+    const driver = await new webdriver.Builder().usingServer(`http://${zalenium_hd}/wd/hub`)
+      .withCapabilities(webdriver.Capabilities.firefox()).build();
+    console.log("Lauch browser.");
+    // get url
+    await driver.get('http://www.hangame.co.jp');
 
-  // login execution
-  /****** id and password
-  await driver.wait(until.elementLocated(By.id('strmemberid')), 10000);
-  await driver.executeScript(`document.getElementById('strmemberid').setAttribute('value', '${username}')`);
-  await driver.wait(until.elementLocated(By.id('strpassword')), 10000);
-  await driver.executeScript(`document.getElementById('strpassword').setAttribute('value', '${password}')`);
-  await driver.findElement(By.id("loginBtn")).click();
-  *******/
+    // login execution
+    /****** id and password
+    await driver.wait(until.elementLocated(By.id('strmemberid')), 10000);
+    await driver.executeScript(`document.getElementById('strmemberid').setAttribute('value', '${username}')`);
+    await driver.wait(until.elementLocated(By.id('strpassword')), 10000);
+    await driver.executeScript(`document.getElementById('strpassword').setAttribute('value', '${password}')`);
+    await driver.findElement(By.id("loginBtn")).click();
+    *******/
 
-  // issue cookie
-  await driver.manage().addCookie({
-   name: 'scmip',
-   value: scmip,
-   domain: '.hangame.co.jp',
-   path: '/',
-  });
-  await driver.manage().addCookie({
-   name: 'login',
-   value: login,
-   domain: '.hangame.co.jp',
-   path: '/',
-  });
+    // issue cookie
+    await driver.manage().addCookie({
+     name: 'scmip',
+     value: scmip,
+     domain: '.hangame.co.jp',
+     path: '/',
+    });
+    await driver.manage().addCookie({
+     name: 'login',
+     value: login,
+     domain: '.hangame.co.jp',
+     path: '/',
+    });
+    console.log("login set completed.");
 
-  // execute app
-  await visitedRandom(driver);
+    // execute app
+    await visitedRandom(driver);
+
+  } catch (e) {
+    console.log(e);
+    if (typeof driver !== 'undefined') {
+      driver.quit();
+    }
+  }
 })();

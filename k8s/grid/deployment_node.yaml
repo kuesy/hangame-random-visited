@@ -22,4 +22,6 @@ spec:
           value: "selenium-hub"
         - name: HUB_PORT_4444_TCP_PORT
           value: "4444"
+        - name: NODE_MAX_INSTANCES
+          value: "3"
 

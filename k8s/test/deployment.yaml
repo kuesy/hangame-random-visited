@@ -44,6 +44,9 @@ spec:
             secretKeyRef:
               name: secret-data
               key: login
+        envFrom:
+          - configMapRef:
+              name: selenium-config
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
